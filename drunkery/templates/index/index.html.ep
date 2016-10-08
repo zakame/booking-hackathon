@@ -1,0 +1,6 @@
+% layout 'default';
+% title 'Drink Up!';
+%= form_for search_by_city => (method => 'POST') => begin
+  Search for Craft Beers Breweries in/near cities in the US: <%= text_field 'text', placeholder => "City..." %>
+  %= submit_button
+% end  
