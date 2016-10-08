@@ -1,0 +1,1 @@
+export {searchByCity} from './query'

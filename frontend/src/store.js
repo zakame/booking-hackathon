@@ -1,9 +1,11 @@
 import React from 'react'
 import {createStore, applyMiddleware} from 'redux'
 
-const reducer = (state, action) => {
-  return state
-}
+import createLogger from 'redux-logger'
+import thunk from 'redux-thunk'
+
+import Reducers from './reducers'
+let middleware = applyMiddleware(thunk, createLogger())
 
 
-export default createStore(reducer)
+export default createStore(Reducers, middleware)
