@@ -6,6 +6,8 @@ services:
     image: drunkery-back
     ports:
       - 3000:3000
+    networks:
+      - drunkery
   frontend:
     build: ./frontend
     image: drunkery-front
@@ -14,5 +16,10 @@ services:
     volumes:
       - ./frontend:/drunkery
       - node_front:/drunkery/node_modules
+    networks:
+      - drunkery
 volumes:
   node_front:
+
+networks:
+  drunkery:
