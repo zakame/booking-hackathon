@@ -36,6 +36,9 @@ sub by_city {
         my $brew_ish = $self->ua->get($url)->res->json;
         @breweries = @{ $brew_ish->{data} } if $brew_ish->{data};
 
+        # limit to 10 breweries for now
+        @breweries = @breweries[0..9] if @breweries > 10;
+
         $url = Mojo::URL->new( $self->stash->{config}->{booking_getHotels} );
         $url->userinfo("$u:$p");
         $url->query(
@@ -69,6 +72,7 @@ sub by_endpoint {
     my $city_ish;
     if ( $brew_ish->{data} ) {
         @breweries = @{ $brew_ish->{data} };
+        @breweries = @breweries[0..9] if @breweries > 10;
         $city_ish  = $brew_ish->{data}[0]{localtity};
     }
 
