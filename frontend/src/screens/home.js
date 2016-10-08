@@ -16,19 +16,29 @@ class Home extends Component{
         flex: '1',
         alignItems: 'center',
         justifyContent: 'center'
+      },
+      searchBar: {
+        fontSize: '24px',
+        lineHeight: '36px',
+        height: '88px'
       }
     }
   }
+
   search(searchText, dataSource) {
     this.props.dispatch({type: 'SEARCH STARTED'})
-    if(searchText.length >= 3) {
+    if(searchText.length >= 2) {
       this.props.dispatch(searchByCity(searchText))
     }
   }
+
   render() {
-    console.log(this.props)
+    console.log(this.props.autoData)
     return  <div style={this.style.layout}>
               <AutoComplete
+                openOnFocus
+                fullWidth
+                textFieldStyle={this.style.searchBar}
                 hintText="Where do you wanna drink?"
                 floatingLabelText="Where do you wanna drink?"
                 dataSource={this.props.autoData}
