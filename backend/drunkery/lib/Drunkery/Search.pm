@@ -19,9 +19,9 @@ sub by_city {
     );
     my $city_ish = $self->ua->get($url)->res->json;
 
-    # limit to the first result for now
+    # limit to the 10 cities for now
     my @cities = grep { $_->{dest_type} eq 'city' } @$city_ish;
-    @cities = ( $cities[0] ) if @cities > 1;
+    @cities = @cities[ 0 .. 9 ] if @cities > 10;
 
     # resolve hotels & breweries found in each city via BreweryDB
     my ( @breweries, @hotels );
