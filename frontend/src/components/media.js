@@ -1,7 +1,5 @@
 import React from 'react'
 
-
-
 export default function Image(props, state) {
   const style = {
       height: props.height ||'60px',
@@ -11,5 +9,5 @@ export default function Image(props, state) {
       backgroundSize: props.cover ? 'cover': 'contain',
       backgroundRepeat: 'no-repeat'
     }
-  return  <div style={style} />
+  return  <div style={style} className={props.className}/>
 }

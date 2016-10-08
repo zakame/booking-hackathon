@@ -1,20 +1,26 @@
-import { uniq } from 'lodash'
+import { uniqBy } from 'lodash'
+
+const initialState = {
+  inProgress: false,
+  queryString: '',
+  cities: [],
+  cityData: [],
+  breweries: []
+}
+
 
 export default function query(state=initialState, action) {
   switch (action.type) {
+    case 'SEARCH STARTED':
+      return {...state, inProgress: true}
     case 'QUERY_SUCCESS':
+
       let cities = action.payload.map( item => {
         return item.name
       })
-
-      cities = uniq([...state.cities, ...cities])
-      return {...state, cities}
+      return {...state, cities, cityData: action.payload, inProgress: false}
+    case 'SELECTED_CITY':
     default:
       return state
   }
-}
-
-const initialState = {
-  queryString: '',
-  cities: []
 }

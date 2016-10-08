@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import  {AutoComplete} from 'material-ui'
+import  {TextField} from 'material-ui'
 import { connect } from 'react-redux'
-import {throttle} from 'lodash'
+
+import { debounce } from 'lodash'
 
 import {searchByCity} from '../actions'
+import { Loader } from '../components'
 
 class Home extends Component{
   constructor(props) {
@@ -15,7 +17,7 @@ class Home extends Component{
         flexDirection: 'column',
         flex: '1',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'flex-start'
       },
       searchBar: {
         fontSize: '24px',
@@ -25,31 +27,30 @@ class Home extends Component{
     }
   }
 
-  search(searchText, dataSource) {
-    this.props.dispatch({type: 'SEARCH STARTED'})
-    if(searchText.length >= 2) {
-      this.props.dispatch(searchByCity(searchText))
-    }
+  search(ev, data) {
+    this.props.dispatch(searchByCity(data))
+  }
+
+  select(Text) {
+    this.props.dispatch(searchByCity(Text))
   }
 
   render() {
-    console.log(this.props.autoData)
     return  <div style={this.style.layout}>
-              <AutoComplete
-                openOnFocus
+              <TextField
                 fullWidth
-                textFieldStyle={this.style.searchBar}
-                hintText="Where do you wanna drink?"
+                style={this.style.searchBar}
+                hintText="New York, Los Angeles, etc"
                 floatingLabelText="Where do you wanna drink?"
-                dataSource={this.props.autoData}
-                onUpdateInput={throttle(this.search.bind(this), 500)}/>
+                onChange={debounce(this.search.bind(this), 500)}/>
+              {this.props.searching ? <Loader />: null}
             </div>
   }
 }
 
 export default connect((store) => {
   return {
-    query: store.Query.queryString,
-    autoData: store.Query.cities
+    searching: store.Query.inProgress,
+    cities: store.Query.cityData
   }
 })(Home)
