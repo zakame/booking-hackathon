@@ -4,7 +4,7 @@ use Mojo::URL;
 
 sub by_city {
     my $self = shift;
-    my $text = $self->param('text');
+    my $text = $self->param('text') || $self->req->json->{text};
 
     # resolve the city via Booking's API
     my ( $u, $p )

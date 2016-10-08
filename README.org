@@ -8,11 +8,9 @@
    :pretty:   json
    :END:
 
-   WIP.  Currently receives =application/x-www-form-urlencoded=...
-
 ** POST =/search_by_city=
 
-   - expects =text=
+   - expects =text= (either from form or via JSON body)
    - emits JSON array of matching =cities=, =breweries=, and =hotels=
 
    #+BEGIN_SRC http
