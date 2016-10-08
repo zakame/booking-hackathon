@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  backend:
+    build: ./backend
+    image: drunkery-back
+    ports:
+      - 3000:3000
+  frontend:
+    build: ./frontend
+    image: drunkery-front
+    ports:
+      - 8000:3000
+    volumes:
+      - ./frontend:/drunkery
+      - node_front:/drunkery/node_modules
+volumes:
+  node_front:
