@@ -18,6 +18,7 @@ services:
       - node_front:/drunkery/node_modules
     networks:
       - drunkery
+    command: [ npm, run, serve]
 volumes:
   node_front:
 
