@@ -21,12 +21,6 @@ sub startup {
   $r->post('/search_by_city')->to('search#by_city');
   $r->post('/search_by_endpoint')->to('search#by_endpoint');
   # $r->post('/search_by_beer')->to('search#by_beer');
-
-  # allow CORS from any origin for now (dangerous!)
-  $self->hook(after_dispatch => sub {
-    my $c = shift;
-    $c->res->headers->header('Access-Control-Allow-Origin' => $c->req->headers->origin);
-  });
 }
 
 1;
