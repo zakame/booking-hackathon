@@ -8,7 +8,7 @@
    :pretty:   json
    :END:
 
-   WIP.  Currently receives =application/x-www-form-urlencoded...
+   WIP.  Currently receives =application/x-www-form-urlencoded=...
 
 ** POST =/search_by_city=
 
@@ -21,8 +21,8 @@
    text=new+york
    #+END_SRC
 
-   #+RESULTS:
    #+begin_example
+   #+RESULTS:
    [
      [
        {
