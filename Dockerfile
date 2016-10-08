@@ -1,6 +1,6 @@
 FROM tianon/mojo:latest
 
-COPY ./hahm /drunkery
+COPY ./drunkery /drunkery
 
 WORKDIR /drunkery
 
@@ -8,4 +8,4 @@ RUN cpanm --installdeps .
 
 EXPOSE 3000
 
-ENTRYPOINT ["./script/hahm", "daemon"]
+ENTRYPOINT ["./script/drunkery", "daemon"]
