@@ -15,8 +15,9 @@
 
    #+BEGIN_SRC http
    POST /search_by_city
+   Content-Type: application/json
 
-   text=new+york
+   { "text": "new york" }
    #+END_SRC
 
    #+begin_example
