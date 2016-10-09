@@ -6,7 +6,7 @@ import { fitBounds } from 'google-map-react/utils'
 import { debounce } from 'lodash'
 
 import {searchByCity} from '../actions'
-import { Loader, Flex } from '../components'
+import { Loader, Flex , BrewPin, HotelPin} from '../components'
 
 class Home extends Component{
   constructor(props) {
@@ -37,7 +37,16 @@ class Home extends Component{
   }
 
   render() {
-    let {center, zoom} = fitBounds(this.props.bounds, {width: 640, height: 800})
+    let {center, zoom} = fitBounds(this.props.bounds, {width: 640, height: 640})
+    let brews = this.props.breweries ? this.props.breweries.map( (item, index) => {
+      console.log(item.latitude, item.longitude)
+      return <BrewPin key={item.id} lat={item.latitude} lng={item.longitude} text={index}/>
+    }) : undefined
+
+    let hotels = this.props.hotels ? this.props.hotels.map( (item, index) => {
+      console.log(item.latitude, item.longitude)
+      return <HotelPin key={item.id} lat={item.latitude} lng={item.longitude} text={index}/>
+    }) : undefined
     return  <div style={this.style.layout}>
               <Flex direction='row' align='center'>
                 <AutoComplete
@@ -65,7 +74,10 @@ class Home extends Component{
                 defaultCenter={[37.090240, -95.712891]}
                 defaultZoom={1}
                 center={center}
-                zoom={zoom}/>
+                zoom={zoom}>
+                {brews}
+                {hotels}
+                </GoogleMap>
                 </Flex>
 
             </div>
@@ -77,6 +89,8 @@ export default connect((store) => {
     searching: store.Query.inProgress,
     cityData: store.Query.cityData,
     plainCities: store.Query.cities,
-    bounds: store.Query.mapBounds
+    bounds: store.Query.mapBounds,
+    breweries: store.Query.breweries,
+    hotels: store.Query.hotels
   }
 })(Home)
