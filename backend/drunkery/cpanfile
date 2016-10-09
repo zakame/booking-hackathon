@@ -1,4 +1,2 @@
-requires 'Geo::Calc';
 requires 'Mojolicious';
 requires 'Memoize';
-requires 'Scalar::Util';
