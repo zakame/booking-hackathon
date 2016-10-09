@@ -33,9 +33,9 @@ export default function query(state=initialState, action) {
         return {...item, latitude: item.location.latitude, longitude: item.location.longitude}
       }) : undefined
 
-
       return {...state, cities, cityData, inProgress: false, breweries: action.payload[1], hotels: hotels, mapBounds: findMapBounds([...hotels, ...action.payload[1]])}
-    case 'SELECTED_CITY':
+    case 'HOTEL_QUERY_SUCCESS':
+      return{ ...state, inProgress: false, cityData: [], hotels: [action.payload.hotel], breweries: action.payload.data[1], mapBounds: findMapBounds([action.payload.hotel, ...action.payload.data[1]])}
     default:
       return state
   }
@@ -57,8 +57,4 @@ function findMapBounds(arrayOfBrewsandHotels) {
       lng: max(longs, -10)
     }
   }
-}
-
-function findMinAndMax(locationData) {
-
 }
