@@ -27,6 +27,12 @@
 
 [[./14599909_10154601648481913_2085083593_o.png]]
 
+* TODO
+
+- Draw lines between places for Pub crawl!
+- Search by Beer!
+- Whatever else we can get drunk on!
+
 * Drink Up!
 
 http://drunkery.tk
