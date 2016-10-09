@@ -1,1 +1,1 @@
-export {searchByCity} from './query'
+export {searchByCity, searchByCoords} from './query'

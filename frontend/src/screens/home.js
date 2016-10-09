@@ -5,8 +5,8 @@ import GoogleMap from 'google-map-react'
 import { fitBounds } from 'google-map-react/utils'
 import { debounce } from 'lodash'
 
-import {searchByCity} from '../actions'
-import { Loader, Flex , BrewPin, HotelPin} from '../components'
+import {searchByCity, searchByCoords} from '../actions'
+import { Loader, Flex , BrewPin, HotelPin, HotelCard, BrewCard} from '../components'
 
 class Home extends Component{
   constructor(props) {
@@ -28,6 +28,9 @@ class Home extends Component{
     }
   }
 
+  componentWillMount(){
+    this.props.dispatch(searchByCity('san fran'))
+  }
   search(data) {
     if(data.length >= 2){this.props.dispatch(searchByCity(data))}
   }
@@ -36,17 +39,23 @@ class Home extends Component{
     this.props.dispatch(searchByCity(Text))
   }
 
+  clickHotel(hotel){
+    this.props.dispatch(searchByCoords(hotel.latitude, hotel.longitude))
+  }
+
   render() {
     let {center, zoom} = fitBounds(this.props.bounds, {width: 640, height: 640})
-    let brews = this.props.breweries ? this.props.breweries.map( (item, index) => {
-      console.log(item.latitude, item.longitude)
-      return <BrewPin key={item.id} lat={item.latitude} lng={item.longitude} text={index}/>
-    }) : undefined
+    let [brews, brewCards] = this.props.breweries ? this.props.breweries.reduce( (iterable, item, index) => {
+      return [[...iterable[0], <BrewPin key={item.id} lat={item.latitude} lng={item.longitude} text={index+1}/>] ,[...iterable[1],
+      <BrewCard key={item.id} data={item}/>]]
+    }, [[], []] ) : []
 
-    let hotels = this.props.hotels ? this.props.hotels.map( (item, index) => {
-      console.log(item.latitude, item.longitude)
-      return <HotelPin key={item.id} lat={item.latitude} lng={item.longitude} text={index}/>
-    }) : undefined
+    let [hotels, hotelCards] = this.props.hotels ? this.props.hotels.reduce( (iterable,item, index) => {
+      return [[...iterable[0], <HotelPin key={item.hotel_id} lat={item.latitude} lng={item.longitude} text={index+1}/>] , [...iterable[1],
+          <HotelCard clickHandler={this.clickHotel.bind(this, item)} data={item} key={item.hotel_id}/>]]
+    }, [[], []] ) : []
+
+    console.log(hotels, hotelCards)
     return  <div style={this.style.layout}>
               <Flex direction='row' align='center'>
                 <AutoComplete
@@ -64,9 +73,18 @@ class Home extends Component{
                 {this.props.searching ? <Loader />: null}
               </Flex>
 
-              <Flex style={{height: 'calc(100vh - 250px)'}}>
+              <Flex style={{height: 'calc(100vh - 190px)'}}>
                 {/* results here */}
-                <div style={{width: '100%'}}/>
+                <div style={{width: '150%', marginRight: '20px'}}  className='grid'>
+                  <div>
+                    <h3>Drink at:</h3>
+                    <div className='container' style={{ height: 'calc(100vh - 190px)', overflow: 'scroll' ,overflowX:'hidden'}}>{brewCards}</div>
+                  </div>
+                  <div>
+                    <h3>Crash at:</h3>
+                    <div className='container' style={{ height: 'calc(100vh - 190px)', overflow: 'scroll' ,overflowX:'hidden'}}>{hotelCards}</div>
+                  </div>
+                </div>
                 <GoogleMap
                 bootstrapURLKeys={{
                   key: 'AIzaSyCjRJl8UzC5aYZQ4OHkLp1sb74ux1g0HTg'

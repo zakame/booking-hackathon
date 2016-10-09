@@ -1,6 +1,11 @@
 
 body {
   margin: 0;
+  font-family: 'montserrat';
+}
+
+a {
+  color: '#212121' !important;
 }
 
 .loader {
@@ -26,4 +31,26 @@ body {
 .grid > * {
   flex: 1 0 5em; /* 3 (edit me!) */
   margin: 0.5em; /* 4 (edit me!) */
+}
+
+.container {
+  padding-right: 3px;
+
+}
+.container::-webkit-scrollbar {
+    width: 0.5em;
+    display: none;
+}
+
+.container::-webkit-scrollbar-track {
+    -webkit-box-shadow: 0;
+    padding: '3px, 0';
+    width: 10px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
+  outline: 1px solid #ccc;
+  width: 10px;
 }

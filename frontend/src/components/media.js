@@ -7,7 +7,8 @@ export default function Image(props, state) {
       backgroundPosition: 'center center',
       backgroundImage: `url(${props.source})`,
       backgroundSize: props.cover ? 'cover': 'contain',
-      backgroundRepeat: 'no-repeat'
+      backgroundRepeat: 'no-repeat',
+      ...props.style
     }
   return  <div style={style} className={props.className}/>
 }
