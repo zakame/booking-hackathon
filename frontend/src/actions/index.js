@@ -1,1 +1,1 @@
-export {searchByCity, searchByCoords} from './query'
+export {searchByCity, searchByHotel, getAwesomestHotel} from './query'

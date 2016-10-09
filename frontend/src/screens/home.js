@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import  {AutoComplete, Toggle} from 'material-ui'
+import  {AutoComplete, RaisedButton} from 'material-ui'
 import { connect } from 'react-redux'
 import GoogleMap from 'google-map-react'
 import { fitBounds } from 'google-map-react/utils'
 import { debounce } from 'lodash'
 
-import {searchByCity, searchByCoords} from '../actions'
-import { Loader, Flex , BrewPin, HotelPin, HotelCard, BrewCard} from '../components'
+import {searchByCity, searchByHotel , getAwesomestHotel} from '../actions'
+import { Loader, Flex , BrewPin, HotelPin, HotelCard, BrewCard, DrawLine} from '../components'
 
 class Home extends Component{
   constructor(props) {
@@ -28,8 +28,8 @@ class Home extends Component{
     }
   }
 
-  componentWillMount(){
-    this.props.dispatch(searchByCity('san fran'))
+  componentDidMount(){
+    this.props.dispatch(searchByCity('Amsterdam'))
   }
   search(data) {
     if(data.length >= 2){this.props.dispatch(searchByCity(data))}
@@ -40,11 +40,19 @@ class Home extends Component{
   }
 
   clickHotel(hotel){
-    this.props.dispatch(searchByCoords(hotel.latitude, hotel.longitude))
+    this.props.dispatch(searchByHotel(hotel.latitude, hotel.longitude, hotel))
+  }
+
+  hammerTime(ev, data, brews, hotels){
+    console.log(brews, hotels)
+    if (data) {
+
+      this.props.dispatch(getAwesomestHotel(hotels, brews))
+    }
   }
 
   render() {
-    let {center, zoom} = fitBounds(this.props.bounds, {width: 640, height: 640})
+    let {center, zoom} = fitBounds(this.props.bounds, {width: 500, height: 500})
     let [brews, brewCards] = this.props.breweries ? this.props.breweries.reduce( (iterable, item, index) => {
       return [[...iterable[0], <BrewPin key={item.id} lat={item.latitude} lng={item.longitude} text={index+1}/>] ,[...iterable[1],
       <BrewCard key={item.id} data={item}/>]]
@@ -66,9 +74,11 @@ class Home extends Component{
                 dataSource={this.props.plainCities}
                 onUpdateInput={debounce(this.search.bind(this), 500)}
                 onNewRequest={this.select.bind(this)}/>
-                <Toggle
-                  label="Hammer Time"
-                  style={{width: 'auto'}}
+                <RaisedButton
+                  label="FIND BEST"
+                  style={{width: '200px'}}
+                  primary
+                  onClick={this.hammerTime.bind(this, event, this, this.props.breweries, this.props.hotels)}
                 />
                 {this.props.searching ? <Loader />: null}
               </Flex>
@@ -77,19 +87,20 @@ class Home extends Component{
                 {/* results here */}
                 <div style={{width: '150%', marginRight: '20px'}}  className='grid'>
                   <div>
-                    <h3>Drink at:</h3>
-                    <div className='container' style={{ height: 'calc(100vh - 190px)', overflow: 'scroll' ,overflowX:'hidden'}}>{brewCards}</div>
-                  </div>
-                  <div>
                     <h3>Crash at:</h3>
                     <div className='container' style={{ height: 'calc(100vh - 190px)', overflow: 'scroll' ,overflowX:'hidden'}}>{hotelCards}</div>
                   </div>
+                  <div>
+                    <h3>Drink at:</h3>
+                    <div className='container' style={{ height: 'calc(100vh - 190px)', overflow: 'scroll' ,overflowX:'hidden'}}>{brewCards}</div>
+                  </div>
+
                 </div>
                 <GoogleMap
                 bootstrapURLKeys={{
                   key: 'AIzaSyCjRJl8UzC5aYZQ4OHkLp1sb74ux1g0HTg'
                 }}
-                defaultCenter={[37.090240, -95.712891]}
+                defaultCenter={[52.373095, 4.893305]}
                 defaultZoom={1}
                 center={center}
                 zoom={zoom}>
