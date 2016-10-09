@@ -11,9 +11,6 @@ services:
   frontend:
     build: ./frontend
     image: drunkery-front
-    volumes:
-      - ./frontend:/drunkery
-      - node_front:/drunkery/node_modules
     networks:
       - drunkery
     command: [ npm, run, serve]
@@ -22,10 +19,11 @@ services:
     depends_on:
       - frontend
       - backend
-    volumes:
-      - ./drunkery.conf:/etc/nginx/conf.d/default.conf
     ports:
       - 80:80
+    volumes:
+      - ./drunkery.conf:/etc/nginx/conf.d/default.conf
+
     networks:
       - drunkery
 volumes:

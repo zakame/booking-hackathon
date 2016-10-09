@@ -50,7 +50,7 @@ export class HotelCard extends Component {
     return <Paper style={style.container} onClick={this.props.clickHandler}>
             <Flex align='center'>
               <Image source={Hotel} width='20px' height='20px' style={{marginRight: '20px', flexShrink: 0}}/>
-              <div><p style={style.type}>{`${"★" * this.props.data.class} Hotel`}</p>
+              <div><p style={style.type}>{` ${"★".repeat(this.props.data.class)} Hotel`}</p>
               <p style={style.name}>{this.props.data.name}</p>
               <p style={style.type}>{this.props.data.address}</p>
               <p style={style.type}>{`From ${this.props.data.currencycode}${this.props.data.minrate} to ${this.props.data.currencycode}${this.props.data.maxrate}`}</p>

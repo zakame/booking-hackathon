@@ -4,7 +4,7 @@ axios.defaults.headers.post = {}
 export function searchByCity(city, getBreweries) {
   return dispatch => {
     dispatch({type: 'SEARCH STARTED', payload: city})
-    axios.post('http://localhost/search_by_city', { text: city})
+    axios.post('/search_by_city', { text: city, radius: 12})
     .then(results => {
       dispatch({type: 'QUERY_SUCCESS', payload: results.data})
     })
@@ -17,7 +17,7 @@ export function searchByCity(city, getBreweries) {
 export function searchByHotel(lat, lng, hotel) {
   return dispatch => {
     dispatch({type: 'SEARCH STARTED'})
-    axios.post('http://localhost/search_by_endpoint',{lat: lat, lng: lng, radius: 5})
+    axios.post('/search_by_endpoint',{lat: lat, lng: lng, radius: 12})
     .then(results => {
       dispatch({type: 'HOTEL_QUERY_SUCCESS', payload: {data: results.data, hotel: hotel}})
     })
