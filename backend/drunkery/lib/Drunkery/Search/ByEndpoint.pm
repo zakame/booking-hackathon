@@ -20,14 +20,15 @@ sub run {
     my $city_ish;
     if ( $brew_ish->{data} ) {
         @breweries = @{ $brew_ish->{data} };
-        @breweries = @breweries[0..9] if @breweries > 10;
+        @breweries = @breweries[ 0 .. 29 ] if @breweries > 30;
         $city_ish  = $brew_ish->{data}[0]{localtity};
     }
 
     my ( $u, $p )
         = @{ $self->stash->{config} }{qw(booking_username booking_password)};
 
-# work around Booking not giving us city_ids when searching by location marker
+    # work around Booking not giving us city_ids when searching by location
+    # marker
     if ($city_ish) {
         $url
             = Mojo::URL->new(
@@ -46,7 +47,7 @@ sub run {
     $url->query(
         city_ids      => $city_ish->{dest_id},
         languagecodes => 'en',
-        rows          => 10,
+        rows          => 30,
     );
     my $hotels_ish = Drunkery::Search::fetch($url);
     @hotels = @$hotels_ish;

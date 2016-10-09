@@ -19,9 +19,9 @@ sub run {
     );
     my $city_ish = Drunkery::Search::fetch($url);
 
-    # limit to the 10 cities for now
+    # limit to the 30 cities for now
     my @cities = grep { $_->{dest_type} eq 'city' } @$city_ish;
-    @cities = @cities[ 0 .. 9 ] if @cities > 10;
+    @cities = @cities[ 0 .. 29 ] if @cities > 30;
 
     # resolve hotels & breweries found in each city via BreweryDB
     my ( @breweries, @hotels );
@@ -37,15 +37,15 @@ sub run {
         my $brew_ish = Drunkery::Search::fetch($url);
         @breweries = @{ $brew_ish->{data} } if $brew_ish->{data};
 
-        # limit to 10 breweries for now
-        @breweries = @breweries[0..9] if @breweries > 10;
+        # limit to 30 breweries for now
+        @breweries = @breweries[ 0 .. 29 ] if @breweries > 30;
 
         $url = Mojo::URL->new( $self->stash->{config}->{booking_getHotels} );
         $url->userinfo("$u:$p");
         $url->query(
             city_ids      => $city->{dest_id},
             languagecodes => 'en',
-            rows          => 10,
+            rows          => 30,
         );
         my $hotels_ish = Drunkery::Search::fetch($url);
         @hotels = @$hotels_ish;
