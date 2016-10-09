@@ -1,26 +1,23 @@
 import axios from 'axios'
 axios.defaults.headers.post = {}
 
-import { memoize } from 'lodash'
-const cache = memoize((city) => false)
 export function searchByCity(city, getBreweries) {
   return dispatch => {
     dispatch({type: 'SEARCH STARTED', payload: city})
-    return cache(city) ? dispatch({type: 'CACHED_RESULT', payload: cache(city)}) : (axios.post('http://localhost/search_by_city', { text: city})
+    axios.post('http://localhost/search_by_city', { text: city})
     .then(results => {
       dispatch({type: 'QUERY_SUCCESS', payload: results.data})
-      cache.cache.set(city, results.data)
     })
     .catch( err => {
       console.log(err.message)
-    }))
+    })
   }
 }
 
 export function searchByHotel(lat, lng, hotel) {
   return dispatch => {
     dispatch({type: 'SEARCH STARTED'})
-    axios.post('http://localhost/search_by_endpoint',{lat: lat, lng: lng, radius: 3})
+    axios.post('http://localhost/search_by_endpoint',{lat: lat, lng: lng, radius: 5})
     .then(results => {
       dispatch({type: 'HOTEL_QUERY_SUCCESS', payload: {data: results.data, hotel: hotel}})
     })
@@ -49,8 +46,6 @@ export function getAwesomestHotel(hotels, brews) {
     dispatch(searchByHotel(awesome[awesome.length-1].latitude, awesome[awesome.length-1].longitude, awesome[awesome.length-1]))
   }
 }
-
-
 
 export function hammerDown(nodes, startNodes, terminalNodes, currentNode) {
 }
