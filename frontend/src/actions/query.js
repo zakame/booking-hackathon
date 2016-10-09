@@ -18,4 +18,19 @@ export function searchByCity(city, getBreweries) {
 }
 
 
+export function hammerDown(nodes, startNodes, terminalNodes, currentNode) {
+
+}
+
+function getAllAdjacent(node, nodes) {
+  return nodes.map((item) => {
+    return getDistance(node, item)
+  })
+}
+
+
+function getDistance(from, to){
+  return Math.sqrt((from.lat - to.lat)^2 + (from.long - to.long)^2)
+}
+
 const cache = memoize((city) => false)

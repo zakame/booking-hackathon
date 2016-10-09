@@ -37,6 +37,7 @@ class Home extends Component{
   }
 
   render() {
+    let {center, zoom} = fitBounds(this.props.bounds, {width: 640, height: 800})
     return  <div style={this.style.layout}>
               <Flex direction='row' align='center'>
                 <AutoComplete
@@ -54,12 +55,18 @@ class Home extends Component{
                 {this.props.searching ? <Loader />: null}
               </Flex>
 
-              <Flex style={{height: '200px'}}><GoogleMap
+              <Flex style={{height: 'calc(100vh - 250px)'}}>
+                {/* results here */}
+                <div style={{width: '100%'}}/>
+                <GoogleMap
                 bootstrapURLKeys={{
                   key: 'AIzaSyCjRJl8UzC5aYZQ4OHkLp1sb74ux1g0HTg'
                 }}
                 defaultCenter={[37.090240, -95.712891]}
-                defaultZoom={1}/></Flex>
+                defaultZoom={1}
+                center={center}
+                zoom={zoom}/>
+                </Flex>
 
             </div>
   }
@@ -69,6 +76,7 @@ export default connect((store) => {
   return {
     searching: store.Query.inProgress,
     cityData: store.Query.cityData,
-    plainCities: store.Query.cities
+    plainCities: store.Query.cities,
+    bounds: store.Query.mapBounds
   }
 })(Home)
