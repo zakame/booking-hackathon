@@ -14,11 +14,11 @@ export default function query(state=initialState, action) {
     case 'SEARCH STARTED':
       return {...state, inProgress: true}
     case 'QUERY_SUCCESS':
-
-      let cities = action.payload.map( item => {
+      let cityData = uniqBy([...state.cityData, ...action.payload[0]], 'name')
+      let cities = cityData.map( item => {
         return item.name
       })
-      return {...state, cities, cityData: action.payload, inProgress: false}
+      return {...state, cities, cityData, inProgress: false, breweries: action.payload[1]}
     case 'SELECTED_CITY':
     default:
       return state

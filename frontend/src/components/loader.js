@@ -4,5 +4,5 @@ import loaderImage from '../static/loading.png'
 import Image from './media'
 
 export default function Loader(props, state) {
-  return <Image source={loaderImage} className='loader'/>
+  return <Image source={loaderImage} className='loader' height='40px'/>
 }

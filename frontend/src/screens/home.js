@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import  {TextField} from 'material-ui'
+import  {AutoComplete, Toggle} from 'material-ui'
 import { connect } from 'react-redux'
-
+import GoogleMap from 'google-map-react'
+import { fitBounds } from 'google-map-react/utils'
 import { debounce } from 'lodash'
 
 import {searchByCity} from '../actions'
-import { Loader } from '../components'
+import { Loader, Flex } from '../components'
 
 class Home extends Component{
   constructor(props) {
@@ -16,7 +17,7 @@ class Home extends Component{
         display: 'flex',
         flexDirection: 'column',
         flex: '1',
-        alignItems: 'center',
+        alignItems: 'stretch',
         justifyContent: 'flex-start'
       },
       searchBar: {
@@ -27,8 +28,8 @@ class Home extends Component{
     }
   }
 
-  search(ev, data) {
-    this.props.dispatch(searchByCity(data))
+  search(data) {
+    if(data.length >= 2){this.props.dispatch(searchByCity(data))}
   }
 
   select(Text) {
@@ -37,13 +38,29 @@ class Home extends Component{
 
   render() {
     return  <div style={this.style.layout}>
-              <TextField
+              <Flex direction='row' align='center'>
+                <AutoComplete
                 fullWidth
-                style={this.style.searchBar}
+                textFieldStyle={this.style.searchBar}
                 hintText="New York, Los Angeles, etc"
                 floatingLabelText="Where do you wanna drink?"
-                onChange={debounce(this.search.bind(this), 500)}/>
-              {this.props.searching ? <Loader />: null}
+                dataSource={this.props.plainCities}
+                onUpdateInput={debounce(this.search.bind(this), 500)}
+                onNewRequest={this.select.bind(this)}/>
+                <Toggle
+                  label="Hammer Time"
+                  style={{width: 'auto'}}
+                />
+                {this.props.searching ? <Loader />: null}
+              </Flex>
+
+              <Flex style={{height: '200px'}}><GoogleMap
+                bootstrapURLKeys={{
+                  key: 'AIzaSyCjRJl8UzC5aYZQ4OHkLp1sb74ux1g0HTg'
+                }}
+                defaultCenter={[37.090240, -95.712891]}
+                defaultZoom={1}/></Flex>
+
             </div>
   }
 }
@@ -51,6 +68,7 @@ class Home extends Component{
 export default connect((store) => {
   return {
     searching: store.Query.inProgress,
-    cities: store.Query.cityData
+    cityData: store.Query.cityData,
+    plainCities: store.Query.cities
   }
 })(Home)
