@@ -17,7 +17,7 @@ sub run {
         languagecode => 'en',
         rows         => 1,
     );
-    my $city_ish = $self->ua->get($url)->res->json;
+    my $city_ish = Drunkery::Search::fetch($url);
 
     # limit to the 10 cities for now
     my @cities = grep { $_->{dest_type} eq 'city' } @$city_ish;
@@ -34,7 +34,7 @@ sub run {
             lat => $city->{latitude},
             lng => $city->{longitude},
         );
-        my $brew_ish = $self->ua->get($url)->res->json;
+        my $brew_ish = Drunkery::Search::fetch($url);
         @breweries = @{ $brew_ish->{data} } if $brew_ish->{data};
 
         # limit to 10 breweries for now
@@ -47,7 +47,7 @@ sub run {
             languagecodes => 'en',
             rows          => 10,
         );
-        my $hotels_ish = $self->ua->get($url)->res->json;
+        my $hotels_ish = Drunkery::Search::fetch($url);
         @hotels = @$hotels_ish;
     }
 

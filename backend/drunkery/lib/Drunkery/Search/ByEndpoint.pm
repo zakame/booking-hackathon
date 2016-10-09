@@ -16,7 +16,7 @@ sub run {
     my $url = Mojo::URL->new(
         $self->stash->{config}->{brewerydb_search_geo_point} );
     $url->query( key => $k, lat => $lat, lng => $lng );
-    my $brew_ish = $self->ua->get($url)->res->json;
+    my $brew_ish = Drunkery::Search::fetch($url);
     my $city_ish;
     if ( $brew_ish->{data} ) {
         @breweries = @{ $brew_ish->{data} };
@@ -38,7 +38,7 @@ sub run {
             languagecode => 'en',
             rows         => 1,
         );
-        $city_ish = $self->ua->get($url)->res->json->[0];
+        $city_ish = Drunkery::Search::fetch($url)->[0];
     }
 
     $url = Mojo::URL->new( $self->stash->{config}->{booking_getHotels} );
@@ -48,7 +48,7 @@ sub run {
         languagecodes => 'en',
         rows          => 10,
     );
-    my $hotels_ish = $self->ua->get($url)->res->json;
+    my $hotels_ish = Drunkery::Search::fetch($url);
     @hotels = @$hotels_ish;
 
     $self->render( json => [ [], \@breweries, \@hotels ] );
