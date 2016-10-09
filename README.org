@@ -11,6 +11,7 @@
 ** POST =/search_by_city=
 
    - expects =text= (either from form or via JSON body)
+   - optional =radius= in km
    - emits JSON array of matching =cities=, =breweries=, and =hotels=
 
    #+BEGIN_SRC http
@@ -242,13 +243,14 @@
 ** POST =/search_by_endpoint=
 
    - expects =lat= and =lng=
+   - optional =radius= in km
    - emits JSON array of empty =city=, matching =breweries=, and =hotels=.
 
 #+BEGIN_SRC http
 POST /search_by_endpoint
 Content-Type: application/json
 
-{ "lat":"40.76807403564453", "lng": "-73.98189544677734" }
+{ "lat":"40.76807403564453", "lng": "-73.98189544677734", "radius": "5" }
 #+END_SRC
 
 #+begin_example

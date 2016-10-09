@@ -6,6 +6,8 @@ sub run {
     my $self = shift;
     my $text = $self->param('text') || $self->req->json->{text};
 
+    my $rad = $self->param('rad') || $self->req->json->{radius};
+
     # resolve the city via Booking's API
     my ( $u, $p )
         = @{ $self->stash->{config} }{qw(booking_username booking_password)};
@@ -34,6 +36,7 @@ sub run {
             lat => $city->{latitude},
             lng => $city->{longitude},
         );
+        $url->query->merge( radius => $rad, unit => 'km' ) if $rad;
         my $brew_ish = Drunkery::Search::fetch($url);
         @breweries = @{ $brew_ish->{data} } if $brew_ish->{data};
 
@@ -47,6 +50,7 @@ sub run {
             languagecodes => 'en',
             rows          => 30,
         );
+        $url->query->merge( radius => $rad ) if $rad;
         my $hotels_ish = Drunkery::Search::fetch($url);
         @hotels = @$hotels_ish;
     }

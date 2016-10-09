@@ -11,11 +11,14 @@ sub run {
     my $lat = $self->param('lat') || $self->req->json->{lat};
     my $lng = $self->param('lng') || $self->req->json->{lng};
 
+    my $rad = $self->param('rad') || $self->req->json->{radius};
+
     my ( @breweries, @hotels );
     my $k   = $self->stash->{config}->{brewerydb_key};
     my $url = Mojo::URL->new(
         $self->stash->{config}->{brewerydb_search_geo_point} );
     $url->query( key => $k, lat => $lat, lng => $lng );
+    $url->query->merge( radius => $rad, unit => 'km' ) if $rad;
     my $brew_ish = Drunkery::Search::fetch($url);
     my $city_ish;
     if ( $brew_ish->{data} ) {
@@ -49,6 +52,7 @@ sub run {
         languagecodes => 'en',
         rows          => 30,
     );
+    $url->query->merge( radius => $rad ) if $rad;
     my $hotels_ish = Drunkery::Search::fetch($url);
     @hotels = @$hotels_ish;
 
