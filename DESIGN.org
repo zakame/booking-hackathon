@@ -605,19 +605,3 @@ Content-Type: application/json
 ]
 #+end_example
 
-** POST /search_by_radius
-
-   - expects =radius=, and either =text= or (=lat= and =lng=)
-     + in case both text and lat/lng are give, coords are preferred
-   - emits JSON array of =cities= (which may be empty whether =text= is
-     given or not,) =breweries= and =hotels= within
-
-#+BEGIN_SRC http
-POST /search_by_radius
-Content-Type: application/json
-
-{ "lat":"40.76807403564453", "lng": "-73.98189544677734", "radius": "5" }
-#+END_SRC
-
-#+RESULTS:
-: parse error: Invalid numeric literal at line 1, column 10
