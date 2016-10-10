@@ -18,8 +18,8 @@ sub startup {
   # $r->get('/')->to('example#welcome');
 
   $r->get('/')->to('index#index');
-  $r->post('/search_by_city')->to('Search::ByCity#run');
-  $r->post('/search_by_endpoint')->to('Search::ByEndpoint#run');
+  $r->any('/search_by_city')->to('Search::ByCity#run');
+  $r->any('/search_by_endpoint')->to('Search::ByEndpoint#run');
   # $r->post('/search_by_beer')->to('search#by_beer');
 }
 

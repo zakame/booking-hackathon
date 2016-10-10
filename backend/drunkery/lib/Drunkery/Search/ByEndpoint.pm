@@ -3,6 +3,11 @@ use Mojo::Base 'Mojolicious::Controller';
 use Drunkery::Search;
 
 sub run {
+
+    shift->reply->static('search_by_endpoint.json');
+
+=for later
+
     my $self = shift;
 
     # empty city array
@@ -57,6 +62,9 @@ sub run {
     @hotels = @$hotels_ish;
 
     $self->render( json => [ [], \@breweries, \@hotels ] );
+
+=cut
+
 }
 
 1;

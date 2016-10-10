@@ -3,6 +3,11 @@ use Mojo::Base 'Mojolicious::Controller';
 use Drunkery::Search;
 
 sub run {
+
+    return shift->reply->static('search_by_city.json');
+
+=for refactor
+
     my $self = shift;
     my $text = $self->param('text') || $self->req->json->{text};
 
@@ -57,6 +62,9 @@ sub run {
 
     # emit as JSON (for JS app to render beautifully)
     $self->render( json => [ \@cities, \@breweries, \@hotels ] );
+
+=cut
+
 }
 
 1;
