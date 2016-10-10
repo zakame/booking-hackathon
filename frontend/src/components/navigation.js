@@ -13,7 +13,6 @@ export default function Navbar(props, state) {
       padding: '5px 100px'
     }
   }
-  console.log(logo)
   return  <div style={style.container}>
             <Image source={logo} />
           </div>

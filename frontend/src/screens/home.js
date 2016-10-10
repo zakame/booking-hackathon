@@ -36,6 +36,7 @@ class Home extends Component{
   }
 
   select(Text) {
+    // window.heap.track('search', {query: Text})
     this.props.dispatch(searchByCity(Text))
   }
 
@@ -44,9 +45,8 @@ class Home extends Component{
   }
 
   hammerTime(ev, data, brews, hotels){
-    console.log(brews, hotels)
+    // window.heap.track('hammerTime!', {text: 'Dropped the hammer'})
     if (data) {
-
       this.props.dispatch(getAwesomestHotel(hotels, brews))
     }
   }
@@ -62,18 +62,17 @@ class Home extends Component{
       return [[...iterable[0], <HotelPin key={item.hotel_id} lat={item.latitude} lng={item.longitude} text={index+1}/>] , [...iterable[1],
           <HotelCard clickHandler={this.clickHotel.bind(this, item)} data={item} key={item.hotel_id}/>]]
     }, [[], []] ) : []
-
-    console.log(hotels, hotelCards)
     return  <div style={this.style.layout}>
               <Flex direction='row' align='center'>
                 <AutoComplete
                 fullWidth
                 textFieldStyle={this.style.searchBar}
                 hintText="New York, Los Angeles, etc"
-                floatingLabelText="Where do you wanna drink?"
+                floatingLabelText="Only New York Data Available (we're working on it)"
                 dataSource={this.props.plainCities}
                 onUpdateInput={debounce(this.search.bind(this), 500)}
-                onNewRequest={this.select.bind(this)}/>
+                onNewRequest={this.select.bind(this)}
+                disabled/>
                 <RaisedButton
                   label="FIND BEST"
                   style={{width: '200px'}}
